@@ -29,6 +29,7 @@ public final class DummyTask extends AsyncTask<Void, Void, Void> {
 		try {
 			Thread.sleep(5000L);
 		} catch (InterruptedException e) {
+			// nothing to do
 			e.printStackTrace();
 		}
 		return null;
