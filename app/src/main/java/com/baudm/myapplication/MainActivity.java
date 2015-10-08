@@ -1,18 +1,30 @@
 package com.baudm.myapplication;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements DummyTask.OnEventListener {
+public class MainActivity extends AppCompatActivity implements TaskFragment.OnEventListener {
+
+	private static final String TAG_TASK_FRAGMENT = "task_fragment";
+
+	private TaskFragment taskFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		final FragmentManager fm = getFragmentManager();
+		taskFragment = (TaskFragment) fm.findFragmentByTag(TAG_TASK_FRAGMENT);
+		if (taskFragment == null) {
+			taskFragment = new TaskFragment();
+			fm.beginTransaction().add(taskFragment, TAG_TASK_FRAGMENT).commit();
+		}
 	}
 
 	@Override
@@ -43,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements DummyTask.OnEvent
 			return true;
 		}
 		if (id == R.id.action_start_task) {
-			new DummyTask(this).execute();
+			taskFragment.executeTask();
 			return true;
 		}
 
